@@ -8,4 +8,6 @@ TOKEN = os.environ["TELEGRAMM_TOKEN"]
 
 bot = telegram.Bot(token=TOKEN)
 
-bot.send_message(chat_id='@myspacephoto', text="Привет")
+chat_id='@myspacephoto'
+
+bot.send_photo(chat_id=chat_id, photo=open('images/epic_0.png', 'rb'))
