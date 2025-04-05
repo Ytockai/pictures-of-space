@@ -10,4 +10,8 @@ bot = telegram.Bot(token=TOKEN)
 
 chat_id='@myspacephoto'
 
-bot.send_photo(chat_id=chat_id, photo=open('images/epic_0.png', 'rb'))
+def send_photo(name_photo):
+    try:
+        bot.send_photo(chat_id=chat_id, photo=open(f'images/{name_photo}', 'rb'))
+    except:
+        pass
