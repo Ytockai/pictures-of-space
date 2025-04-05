@@ -20,10 +20,10 @@ def fetch_spacex_last_launch(url):
     if isinstance(list_data, list):
         for i in list_data:
             if len(i['links']['flickr']['original'])>0:
-                numbered_list = enumerate(i['links']['flickr']['original'])#что-то странное одинаковый код!!!
+                numbered_list = enumerate(i['links']['flickr']['original'])
                 break
     else:
-        numbered_list = enumerate(list_data['links']['flickr']['original'])# и тут делает одно и то-же
+        numbered_list = enumerate(list_data['links']['flickr']['original'])
 
     for image in numbered_list:
         file_name = 'spacex_'+ str(image[0]) + file_extension(image[1])
