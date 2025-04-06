@@ -1,4 +1,6 @@
 import requests
+import random 
+import os
 from pathlib import Path
 from urllib.parse import urlparse
 from os.path import splitext
@@ -6,6 +8,12 @@ from os.path import splitext
 Path("images").mkdir(parents=True, exist_ok=True)
 
 URL = 'https://api.nasa.gov/'
+
+def random_list(directory):
+    filesindir = os.listdir(directory)
+    random.shuffle(filesindir)
+    filesrandom = filesindir
+    return filesrandom
 
 def download_photo(file_path, url_photo):
     with open(file_path, 'wb') as file:
