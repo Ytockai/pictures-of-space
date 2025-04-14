@@ -1,3 +1,4 @@
+import argparse
 import requests
 import os
 from datetime import datetime
@@ -6,11 +7,18 @@ from dotenv import load_dotenv
 from main import download_photo
 from pathlib import Path
 
-Path("images").mkdir(parents=True, exist_ok=True)
 
 URL = 'https://api.nasa.gov/'
 
-def epic_photo(nasa_token):
+def create_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument ('-path','-p', nargs='?', default="images")
+    args = parser.parse_args()
+    Path(f'{args.path}').mkdir(parents=True, exist_ok=True)
+ 
+    return parser
+
+def epic_photo(nasa_token, directory):
     url_epic = 'EPIC/api/natural/'
     payload = {
         'images': '',
@@ -27,15 +35,21 @@ def epic_photo(nasa_token):
         month = str(date.month).zfill(2)
         day = str(date.day).zfill(2)
         name_photo = i[1]['image']
-        url_photo = f'{URL}EPIC/archive/natural/{year}/{month}/{day}/png/{name_photo}.png?api_key={payload["api_key"]}'
-        file_name = 'epic_'+ str(i[0]) + '.png'
-        file_path = Path("images") / file_name
-        download_photo(file_path, url_photo)
+        url_photo = f'{URL}EPIC/archive/natural/{year}/{month}/{day}/png/{name_photo}.png'
+        photo_payload = {
+            'api_key': nasa_token,
+        }
+        response_photo = requests.get(url_photo, params=photo_payload)
+        file_name = f'epic_{str(i[0])}.png'
+        file_path = Path(directory) / file_name
+        download_photo(file_path, response_photo.url)
 
 def main():
     load_dotenv()
+    parser = create_parser()
+    directory = parser.parse_args().path
     nasa_token = os.environ["NASA_TOKEN"]
-    epic_photo(nasa_token)
+    epic_photo(nasa_token, directory)
 
 if __name__ == '__main__':
     main()

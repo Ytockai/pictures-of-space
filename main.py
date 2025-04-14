@@ -1,11 +1,8 @@
 import requests
 import random 
 import os
-from pathlib import Path
 from urllib.parse import urlparse
 from os.path import splitext
-
-Path("images").mkdir(parents=True, exist_ok=True)
 
 URL = 'https://api.nasa.gov/'
 

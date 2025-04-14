@@ -5,7 +5,7 @@ from space_bot import send_photo
 from main import random_list
 
 
-def createParser():
+def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('time', nargs='?', default=14400)
  
@@ -19,7 +19,7 @@ def uploading_photo(time, directory):
 
 def main():
     directory = 'images'
-    parser = createParser()
+    parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     uploading_photo(int(namespace.time), directory)
 

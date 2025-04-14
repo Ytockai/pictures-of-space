@@ -6,17 +6,19 @@ from dotenv import load_dotenv
 from main import download_photo, file_extension
 from pathlib import Path
 
-Path("images").mkdir(parents=True, exist_ok=True)
 
 URL = 'https://api.nasa.gov/'
 
-def createParser ():
+def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('date', nargs='?')
+    parser.add_argument ('-date', '-d', nargs='?')
+    parser.add_argument ('-path','-p', nargs='?', default="images")
+    args = parser.parse_args()
+    Path(f'{args.path}').mkdir(parents=True, exist_ok=True)
  
     return parser
 
-def apod(url, nasa_token, date=None):
+def apod(url, nasa_token, directory, date=None):
     url_apod = 'planetary/apod'
     payload = {
         'start_date': date,
@@ -30,16 +32,16 @@ def apod(url, nasa_token, date=None):
         for i in list_data:
             if "image" in i["media_type"]:
                 url_photo = i['url']
-                file_name = ' apod_'+ str(i['date']) + file_extension(url_photo)
-                file_path = Path("images") / file_name
+                file_name = f'apod_{str(i['date'])}{file_extension(url_photo)}'
+                file_path = Path(f"{directory}") / file_name
                 download_photo(file_path, url_photo)
             else:
                 date = i['date']
                 print(f'фото нет за {date}')
     else:
         url_photo = list_data['url']
-        file_name = 'apod_'+ str(list_data['date']) + file_extension(url_photo)
-        file_path = Path("images") / file_name
+        file_name = f'apod_{str(list_data['date'])}{file_extension(url_photo)}'
+        file_path = Path(f"{directory}") / file_name
         download_photo(file_path, url_photo)
 
 
@@ -47,12 +49,13 @@ def apod(url, nasa_token, date=None):
 def main():
     load_dotenv()
     nasa_token = os.environ["NASA_TOKEN"]
-    parser = createParser()
-    namespace = parser.parse_args (sys.argv[1:])
+    parser = create_parser()
+    namespace = parser.parse_args(sys.argv[1:])
+    directory = namespace.path
     if namespace.date:
-        apod(URL, nasa_token, namespace.date)
+        apod(URL, nasa_token, directory, namespace.date)
     else:
-        apod(URL, nasa_token)
+        apod(URL, nasa_token, directory)
     print('Done!')
 
 if __name__ == '__main__':

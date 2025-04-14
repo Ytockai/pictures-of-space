@@ -5,37 +5,36 @@ import argparse
 from dotenv import load_dotenv
 from main import random_list
 
-load_dotenv()
-
 TOKEN = os.environ["TELEGRAMM_TOKEN"]
+BOT = telegram.Bot(token=TOKEN)
+CHAT_ID = os.environ["CHAT_ID"]
 
-bot = telegram.Bot(token=TOKEN)
 
-chat_id='@myspacephoto'
-
-def createParser ():
+def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('name_image', nargs='?')
+    parser.add_argument ('-name_image', nargs='?')
+    parser.add_argument ('-path','-p', nargs='?', default="images")
  
     return parser
 
 def send_photo(name_photo):
-    try:
-        bot.send_photo(chat_id=chat_id, photo=open(f'images/{name_photo}', 'rb'))
-    except:
-        pass
-
+    with open(os.path.join('images',name_photo), 'rb') as photo:
+        BOT.send_photo(chat_id=CHAT_ID, photo=photo)
+    
 
 def main():
-    directory = 'images'
-    parser = createParser()
-    namespace = parser.parse_args (sys.argv[1:])
+    load_dotenv()
+    parser = create_parser()
+    namespace = parser.parse_args(sys.argv[1:])
+    directory = namespace.path
     if namespace.name_image:
         name_photo = namespace.name_image
-        send_photo(name_photo)
     else:
         name_photo = random_list(directory)[0]
+    try: 
         send_photo(name_photo)
+    except telegram.error.BadRequest:
+        print(f'фото {name_photo} слишком большое')
 
 if __name__ == '__main__':
     main()
