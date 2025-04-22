@@ -3,7 +3,7 @@ import sys
 import os
 import argparse
 from dotenv import load_dotenv
-from main import download_photo, file_extension
+from main import download_photo, determine_file_extension
 from pathlib import Path
 
 
@@ -18,7 +18,7 @@ def create_parser():
  
     return parser
 
-def apod(url, nasa_token, directory, date=None):
+def download_apod(url, nasa_token, directory, date=None):
     url_apod = 'planetary/apod'
     payload = {
         'start_date': date,
@@ -32,7 +32,7 @@ def apod(url, nasa_token, directory, date=None):
         for i in list_data:
             if "image" in i["media_type"]:
                 url_photo = i['url']
-                file_name = f'apod_{str(i['date'])}{file_extension(url_photo)}'
+                file_name = f'apod_{str(i['date'])}{determine_file_extension(url_photo)}'
                 file_path = Path(f"{directory}") / file_name
                 download_photo(file_path, url_photo)
             else:
@@ -40,7 +40,7 @@ def apod(url, nasa_token, directory, date=None):
                 print(f'фото нет за {date}')
     else:
         url_photo = list_data['url']
-        file_name = f'apod_{str(list_data['date'])}{file_extension(url_photo)}'
+        file_name = f'apod_{str(list_data['date'])}{determine_file_extension(url_photo)}'
         file_path = Path(f"{directory}") / file_name
         download_photo(file_path, url_photo)
 
@@ -53,9 +53,9 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.date:
-        apod(URL, nasa_token, directory, namespace.date)
+        download_apod(URL, nasa_token, directory, namespace.date)
     else:
-        apod(URL, nasa_token, directory)
+        download_apod(URL, nasa_token, directory)
     print('Done!')
 
 if __name__ == '__main__':

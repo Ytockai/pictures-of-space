@@ -3,11 +3,7 @@ import telegram
 import os
 import argparse
 from dotenv import load_dotenv
-from main import random_list
-
-TOKEN = os.environ["TELEGRAMM_TOKEN"]
-BOT = telegram.Bot(token=TOKEN)
-CHAT_ID = os.environ["CHAT_ID"]
+from main import mixing_list
 
 
 def create_parser():
@@ -17,22 +13,25 @@ def create_parser():
  
     return parser
 
-def send_photo(name_photo):
-    with open(os.path.join('images',name_photo), 'rb') as photo:
-        BOT.send_photo(chat_id=CHAT_ID, photo=photo)
+def send_photo(name_photo, bot, tg_chat_id, directory):
+    with open(os.path.join(directory ,name_photo), 'rb') as photo:
+        bot.send_photo(chat_id=tg_chat_id, photo=photo)
     
 
 def main():
     load_dotenv()
+    token = os.environ["TELEGRAMM_TOKEN"]
+    bot = telegram.Bot(token=token)
+    tg_chat_id = os.environ["TG_CHAT_ID"]
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.name_image:
         name_photo = namespace.name_image
     else:
-        name_photo = random_list(directory)[0]
+        name_photo = mixing_list(directory)[0]
     try: 
-        send_photo(name_photo)
+        send_photo(name_photo, bot, tg_chat_id, directory)
     except telegram.error.BadRequest:
         print(f'фото {name_photo} слишком большое')
 

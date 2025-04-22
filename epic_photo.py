@@ -18,7 +18,7 @@ def create_parser():
  
     return parser
 
-def epic_photo(nasa_token, directory):
+def download_epic_photo(nasa_token, directory):
     url_epic = 'EPIC/api/natural/'
     payload = {
         'images': '',
@@ -27,29 +27,30 @@ def epic_photo(nasa_token, directory):
 
     response = requests.get(f'{URL}{url_epic}', params=payload)
     response.raise_for_status()
-    url_key = response.json()
-    numbered_url_key = enumerate(url_key)
-    for i in numbered_url_key:
-        date = datetime.strptime(i[1]['date'], '%Y-%m-%d %H:%M:%S')
+    list_data_photo = response.json()
+    numbered_list = enumerate(list_data_photo)
+    for data_photo in numbered_list:
+        date = datetime.strptime(data_photo[1]['date'], '%Y-%m-%d %H:%M:%S')
         year = date.year
         month = str(date.month).zfill(2)
         day = str(date.day).zfill(2)
-        name_photo = i[1]['image']
-        url_photo = f'{URL}EPIC/archive/natural/{year}/{month}/{day}/png/{name_photo}.png'
+        name_photo = data_photo[1]['image']
+        photo_url = f'{URL}EPIC/archive/natural/{year}/{month}/{day}/png/{name_photo}.png'
         photo_payload = {
             'api_key': nasa_token,
         }
-        response_photo = requests.get(url_photo, params=photo_payload)
-        file_name = f'epic_{str(i[0])}.png'
+        photo_response = requests.get(photo_url, params=photo_payload)
+        response.raise_for_status()
+        file_name = 'epic_{}.png'.format(data_photo[0])
         file_path = Path(directory) / file_name
-        download_photo(file_path, response_photo.url)
+        download_photo(file_path, photo_response.url)
 
 def main():
     load_dotenv()
     parser = create_parser()
     directory = parser.parse_args().path
     nasa_token = os.environ["NASA_TOKEN"]
-    epic_photo(nasa_token, directory)
+    download_epic_photo(nasa_token, directory)
 
 if __name__ == '__main__':
     main()

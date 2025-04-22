@@ -6,7 +6,7 @@ from os.path import splitext
 
 URL = 'https://api.nasa.gov/'
 
-def random_list(directory):
+def mixing_list(directory):
     filesindir = os.listdir(directory)
     random.shuffle(filesindir)
     filesrandom = filesindir
@@ -18,13 +18,7 @@ def download_photo(file_path, url_photo):
             response.raise_for_status()
             file.write(response.content)
 
-def file_extension(url):
+def determine_file_extension(url):
     filename = urlparse(url)
     extension = splitext(filename.path)
     return extension[1]
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
