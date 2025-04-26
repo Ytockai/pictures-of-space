@@ -2,7 +2,7 @@ import sys
 import time as t
 import argparse
 from space_bot import send_photo
-from main import mixing_list
+from main import shuffle_list
 
 
 def create_parser():
@@ -12,9 +12,9 @@ def create_parser():
  
     return parser
 
-def uploading_photo(time, directory):
+def upload_photo(time, directory):
     while True:
-        for filesindirs in mixing_list(directory):
+        for filesindirs in shuffle_list(directory):
             t.sleep(time)
             send_photo(filesindirs)
 
@@ -22,7 +22,7 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
-    uploading_photo(int(namespace.time), directory)
+    upload_photo(int(namespace.time), directory)
 
 if __name__ == '__main__':
     main()

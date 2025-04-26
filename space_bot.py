@@ -3,7 +3,7 @@ import telegram
 import os
 import argparse
 from dotenv import load_dotenv
-from main import mixing_list
+from main import shuffle_list
 
 
 def create_parser():
@@ -27,13 +27,13 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.name_image:
-        name_photo = namespace.name_image
+        photo_name = namespace.name_image
     else:
-        name_photo = mixing_list(directory)[0]
+        photo_name = shuffle_list(directory)[0]
     try: 
-        send_photo(name_photo, bot, tg_chat_id, directory)
+        send_photo(photo_name, bot, tg_chat_id, directory)
     except telegram.error.BadRequest:
-        print(f'фото {name_photo} слишком большое')
+        print(f'фото {photo_name} слишком большое')
 
 if __name__ == '__main__':
     main()

@@ -15,19 +15,19 @@ def create_parser():
     return parser
 
 
-def fetch_spacex_last_launch(directory, id):
-    url = f'https://api.spacexdata.com/v5/launches/{id}'
-    response_link = requests.get(url)
-    response_link.raise_for_status()
-    list_data = response_link.json()
-    if isinstance(list_data, list):
-        for data in list_data:
+def fetch_spacex_last_launch(directory, id_launch):
+    url = f'https://api.spacexdata.com/v5/launches/{id_launch}'
+    response_url = requests.get(url)
+    response_url.raise_for_status()
+    data_launch = response_url.json()
+    if isinstance(data_launch, list):
+        for data in data_launch:
             data_url = data['links']['flickr']['original']
             if len(data_url) > 0:
                 numbered_list = enumerate(data_url)
                 break
     else:
-        data_url = list_data['links']['flickr']['original']
+        data_url = data['links']['flickr']['original']
         numbered_list = enumerate(data_url)
 
     for image in numbered_list:
@@ -42,10 +42,10 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.id:
-        id = namespace.id
+        id_launch = namespace.id
     else:
-        id = ''
-    fetch_spacex_last_launch(directory, id)
+        id_launch = ''
+    fetch_spacex_last_launch(directory, id_launch)
     print('Done!')
 
 if __name__ == '__main__':

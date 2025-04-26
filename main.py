@@ -6,7 +6,7 @@ from os.path import splitext
 
 URL = 'https://api.nasa.gov/'
 
-def mixing_list(directory):
+def shuffle_list(directory):
     filesindir = os.listdir(directory)
     random.shuffle(filesindir)
     filesrandom = filesindir
