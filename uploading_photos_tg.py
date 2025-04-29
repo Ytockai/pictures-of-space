@@ -7,7 +7,7 @@ from main import shuffle_list
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('time', nargs='?', default=14400)
+    parser.add_argument('-time', nargs='?', default=14400)
     parser.add_argument ('-path','-p', nargs='?', default="images")
  
     return parser
