@@ -38,7 +38,7 @@ def download_apod(nasa_token, directory, date=None):
                 print(f'фото нет за {date}')
     else:
         photo_url = list_data['url']
-        file_name = f'apod_{str(list_data['date'])}{determine_file_extension(photo_url)}'
+        file_name = 'apod_{}{}'.format(list_data['date'],determine_file_extension(photo_url))
         file_path = Path(directory) / file_name
         download_photo(file_path, photo_url)
 
