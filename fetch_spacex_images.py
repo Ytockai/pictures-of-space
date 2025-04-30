@@ -31,7 +31,7 @@ def fetch_spacex_last_launch(directory, id_launch):
         numbered_list = enumerate(data_url)
 
     for image in numbered_list:
-        file_name = 'spacex_{}{}'.format((image[0]), determine_file_extension(image[1]))
+        file_name = 'spacex_{}{}'.format(image[0], determine_file_extension(image[1]))
         file_path = Path(directory) / file_name
         url_photo = image[1]
         download_photo(file_path, url_photo)
