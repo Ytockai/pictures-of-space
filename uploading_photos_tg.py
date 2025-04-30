@@ -16,7 +16,7 @@ def upload_photo(time, directory):
     while True:
         for filesindirs in shuffle_list(directory):
             t.sleep(time)
-            send_photo(filesindirs)
+            send_photo(filesindirs, directory)
 
 def main():
     parser = create_parser()
