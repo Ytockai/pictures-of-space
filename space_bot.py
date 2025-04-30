@@ -13,16 +13,16 @@ def create_parser():
  
     return parser
 
-def send_photo(name_photo, bot, tg_chat_id, directory):
+def send_photo(name_photo, directory):
+    load_dotenv()
+    token = os.environ["TELEGRAMM_TOKEN"]
+    bot = telegram.Bot(token=token)
+    tg_chat_id = os.environ["TG_CHAT_ID"]
     with open(os.path.join(directory ,name_photo), 'rb') as photo:
         bot.send_photo(chat_id=tg_chat_id, photo=photo)
     
 
 def main():
-    load_dotenv()
-    token = os.environ["TELEGRAMM_TOKEN"]
-    bot = telegram.Bot(token=token)
-    tg_chat_id = os.environ["TG_CHAT_ID"]
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
@@ -31,7 +31,7 @@ def main():
     else:
         photo_name = shuffle_list(directory)[0]
     try: 
-        send_photo(photo_name, bot, tg_chat_id, directory)
+        send_photo(photo_name, directory)
     except telegram.error.BadRequest:
         print(f'фото {photo_name} слишком большое')
 
