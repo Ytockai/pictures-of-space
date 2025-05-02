@@ -26,7 +26,7 @@ def fetch_spacex_last_launch(directory, id_launch):
             if len(data_url) > 0:
                 break
     else:
-        data_url = data['links']['flickr']['original']
+        data_url = data_launch['links']['flickr']['original']
 
     for index, image_url in enumerate(data_url):
         file_name = 'spacex_{}{}'.format(index, determine_file_extension(image_url))
