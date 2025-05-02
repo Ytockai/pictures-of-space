@@ -24,13 +24,11 @@ def fetch_spacex_last_launch(directory, id_launch):
         for data in data_launch:
             data_url = data['links']['flickr']['original']
             if len(data_url) > 0:
-                numbered_list = enumerate(data_url)
                 break
     else:
         data_url = data['links']['flickr']['original']
-        numbered_list = enumerate(data_url)
 
-    for index, image_url in numbered_list:
+    for index, image_url in enumerate(data_url):
         file_name = 'spacex_{}{}'.format(index, determine_file_extension(image_url))
         file_path = Path(directory) / file_name
         download_photo(file_path, image_url)
