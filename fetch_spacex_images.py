@@ -15,8 +15,8 @@ def create_parser():
     return parser
 
 
-def fetch_spacex_last_launch(directory, id_launch):
-    url = f'https://api.spacexdata.com/v5/launches/{id_launch}'
+def fetch_spacex_last_launch(directory, launch_id):
+    url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     response_url = requests.get(url)
     response_url.raise_for_status()
     data_launch = response_url.json()
@@ -39,10 +39,10 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.id:
-        id_launch = namespace.id
+        launch_id = namespace.id
     else:
-        id_launch = ''
-    fetch_spacex_last_launch(directory, id_launch)
+        launch_id = ''
+    fetch_spacex_last_launch(directory, launch_id)
     print('Done!')
 
 if __name__ == '__main__':
