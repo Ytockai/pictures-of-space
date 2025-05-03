@@ -7,7 +7,7 @@ from pathlib import Path
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument ('-id', nargs='?')
+    parser.add_argument ('-id', nargs='?', default="")
     parser.add_argument ('-path','-p', nargs='?', default="images")
     args = parser.parse_args()
     Path(f'{args.path}').mkdir(parents=True, exist_ok=True)
@@ -38,10 +38,7 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
-    if namespace.id:
-        launch_id = namespace.id
-    else:
-        launch_id = ''
+    launch_id = namespace.id
     fetch_spacex_last_launch(directory, launch_id)
     print('Done!')
 
