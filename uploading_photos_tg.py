@@ -7,7 +7,7 @@ from main import shuffle_list
 
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-time', nargs='?', default=14400)
+    parser.add_argument('-time', nargs='?', default=14400, type=int)
     parser.add_argument ('-path','-p', nargs='?', default="images")
  
     return parser
@@ -22,7 +22,7 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
-    upload_photo(int(namespace.time), directory)
+    upload_photo(namespace.time, directory)
 
 if __name__ == '__main__':
     main()
