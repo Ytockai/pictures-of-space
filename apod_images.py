@@ -25,9 +25,9 @@ def download_apod(nasa_token, directory, date=None):
     
     response = requests.get(f'{apod_url}', params=payload)
     response.raise_for_status()
-    list_data = response.json()
-    if isinstance(list_data, list):
-        for i in list_data:
+    photos_data = response.json()
+    if isinstance(photos_data, list):
+        for i in photos_data:
             if "image" in i["media_type"]:
                 photo_url = i['url']
                 file_name = 'apod_{}{}'.format(i['date'],determine_file_extension(photo_url))
@@ -37,8 +37,8 @@ def download_apod(nasa_token, directory, date=None):
                 date = i['date']
                 print(f'фото нет за {date}')
     else:
-        photo_url = list_data['url']
-        file_name = 'apod_{}{}'.format(list_data['date'],determine_file_extension(photo_url))
+        photo_url = photos_data['url']
+        file_name = 'apod_{}{}'.format(photos_data['date'],determine_file_extension(photo_url))
         file_path = Path(directory) / file_name
         download_photo(file_path, photo_url)
 
