@@ -17,9 +17,9 @@ def create_parser():
 
 def fetch_spacex_last_launch(directory, launch_id):
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
-    response_url = requests.get(url)
-    response_url.raise_for_status()
-    data_launch = response_url.json()
+    response = requests.get(url)
+    response.raise_for_status()
+    data_launch = response.json()
     if isinstance(data_launch, list):
         for data in data_launch:
             data_url = data['links']['flickr']['original']
