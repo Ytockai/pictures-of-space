@@ -27,9 +27,8 @@ def download_epic_photo(nasa_token, directory):
 
     response = requests.get(f'{URL}{url_epic}', params=payload)
     response.raise_for_status()
-    list_data_photo = response.json()
-    numbered_list = enumerate(list_data_photo)
-    for photo_num, data_photo in numbered_list:
+    data_photos = response.json()
+    for photo_num, data_photo in enumerate(data_photos):
         date = datetime.strptime(data_photo['date'], '%Y-%m-%d %H:%M:%S')
         date_photo = date.strftime('%Y/%m/%d')
         name_photo = data_photo['image']
