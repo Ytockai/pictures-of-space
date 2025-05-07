@@ -22,7 +22,7 @@ def main():
     load_dotenv()
     token = os.environ["TELEGRAMM_TOKEN"]
     bot = telegram.Bot(token=token)
-    tg_chat_id = os.environ["TG_CHAT_ID"]
+    tg_chat_id = os.environ["TELEGRAMM_CHAT_ID"]
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
