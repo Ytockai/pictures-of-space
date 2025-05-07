@@ -27,14 +27,14 @@ def download_apod(nasa_token, directory, date=None):
     response.raise_for_status()
     photos_data = response.json()
     if isinstance(photos_data, list):
-        for i in photos_data:
-            if "image" in i["media_type"]:
-                photo_url = i['url']
-                file_name = 'apod_{}{}'.format(i['date'],determine_file_extension(photo_url))
+        for data in photos_data:
+            if "image" in data["media_type"]:
+                photo_url = data['url']
+                file_name = 'apod_{}{}'.format(data['date'],determine_file_extension(photo_url))
                 file_path = Path(directory) / file_name
                 download_photo(file_path, photo_url)
             else:
-                date = i['date']
+                date = data['date']
                 print(f'фото нет за {date}')
     else:
         photo_url = photos_data['url']
