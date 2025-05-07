@@ -1,6 +1,9 @@
 import sys
+import os
+import telegram
 import time as t
 import argparse
+from dotenv import load_dotenv
 from space_bot import send_photo
 from main import shuffle_list
 
@@ -12,17 +15,21 @@ def create_parser():
  
     return parser
 
-def upload_photo(time, directory):
+def upload_photo(time, directory, bot, tg_chat_id):
     while True:
         for filesindirs in shuffle_list(directory):
             t.sleep(time)
-            send_photo(filesindirs, directory)
+            send_photo(filesindirs, directory, bot, tg_chat_id)
 
 def main():
+    load_dotenv()
+    token = os.environ["TELEGRAMM_TOKEN"]
+    bot = telegram.Bot(token=token)
+    tg_chat_id = os.environ["TG_CHAT_ID"]
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
-    upload_photo(namespace.time, directory)
+    upload_photo(namespace.time, directory, bot, tg_chat_id)
 
 if __name__ == '__main__':
     main()
