@@ -18,9 +18,12 @@ def create_parser():
 def upload_photos(time, directory, bot, tg_chat_id):
     while True:
         for file in shuffle_list(directory):
-            t.sleep(time)
-            send_photo(file, directory, bot, tg_chat_id)
-
+            try:
+                send_photo(file, directory, bot, tg_chat_id)
+                t.sleep(time)
+            except telegram.error.NetworkError:
+                print('что-то с соединением, попробуем снова через 15 секунд')
+                t.sleep(15)
 def main():
     load_dotenv()
     token = os.environ["TELEGRAMM_TOKEN"]
