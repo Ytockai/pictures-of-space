@@ -1,7 +1,7 @@
 import requests
 import sys
 import argparse
-from functions import download_photo, determine_file_extension
+from functions import download_photo, determine_file_extension, get_response
 from pathlib import Path
 
 
@@ -15,11 +15,7 @@ def create_parser():
     return parser
 
 
-def fetch_spacex_last_launch(directory, launch_id):
-    url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
-    response = requests.get(url)
-    response.raise_for_status()
-    data_launch = response.json()
+def fetch_spacex_last_launch(directory, data_launch):
     if isinstance(data_launch, list):
         for data in data_launch:
             data_url = data['links']['flickr']['original']
@@ -39,7 +35,9 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     launch_id = namespace.id
-    fetch_spacex_last_launch(directory, launch_id)
+    url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
+    data_launch = get_response(url)
+    fetch_spacex_last_launch(directory, data_launch)
     print('Done!')
 
 if __name__ == '__main__':
