@@ -5,7 +5,7 @@ import time as t
 import argparse
 from dotenv import load_dotenv
 from space_bot import send_photo
-from main import shuffle_list
+from functions import shuffle_list
 
 
 def create_parser():

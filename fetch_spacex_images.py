@@ -1,7 +1,7 @@
 import requests
 import sys
 import argparse
-from main import download_photo, determine_file_extension
+from functions import download_photo, determine_file_extension
 from pathlib import Path
 
 

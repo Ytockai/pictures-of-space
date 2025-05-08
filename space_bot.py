@@ -3,7 +3,7 @@ import telegram
 import os
 import argparse
 from dotenv import load_dotenv
-from main import shuffle_list
+from functions import shuffle_list
 
 
 def create_parser():

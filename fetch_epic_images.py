@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from main import download_photo
+from functions import download_photo
 from pathlib import Path
 
 

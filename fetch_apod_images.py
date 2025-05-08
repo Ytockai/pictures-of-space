@@ -3,7 +3,7 @@ import sys
 import os
 import argparse
 from dotenv import load_dotenv
-from main import download_photo, determine_file_extension
+from functions import download_photo, determine_file_extension
 from pathlib import Path
 
 
