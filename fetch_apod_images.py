@@ -3,7 +3,7 @@ import sys
 import os
 import argparse
 from dotenv import load_dotenv
-from functions import download_photo, determine_file_extension
+from functions import download_photo, determine_file_extension, get_response
 from pathlib import Path
 
 
@@ -17,15 +17,12 @@ def create_parser():
     return parser
 
 def fetch_apod(nasa_token, directory, date=None):
-    apod_url = 'https://api.nasa.gov/planetary/apod'
+    url = 'https://api.nasa.gov/planetary/apod'
     payload = {
         'start_date': date,
         'api_key': nasa_token,
     }
-    
-    response = requests.get(f'{apod_url}', params=payload)
-    response.raise_for_status()
-    photos_data = response.json()
+    photos_data = get_response(url, payload)
     if isinstance(photos_data, list):
         for data in photos_data:
             if "image" in data["media_type"]:
