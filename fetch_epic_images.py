@@ -18,7 +18,7 @@ def create_parser():
  
     return parser
 
-def download_epic_photo(nasa_token, directory):
+def fetch_epic_photo(nasa_token, directory):
     url_epic = 'EPIC/api/natural/'
     payload = {
         'images': '',
@@ -47,7 +47,7 @@ def main():
     parser = create_parser()
     directory = parser.parse_args().path
     nasa_token = os.environ["NASA_TOKEN"]
-    download_epic_photo(nasa_token, directory)
+    fetch_epic_photo(nasa_token, directory)
 
 if __name__ == '__main__':
     main()
