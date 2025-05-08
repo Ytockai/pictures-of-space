@@ -16,7 +16,7 @@ def create_parser():
  
     return parser
 
-def download_apod(nasa_token, directory, date=None):
+def fetch_apod(nasa_token, directory, date=None):
     apod_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
         'start_date': date,
@@ -51,9 +51,9 @@ def main():
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
     if namespace.date:
-        download_apod(nasa_token, directory, namespace.date)
+        fetch_apod(nasa_token, directory, namespace.date)
     else:
-        download_apod(nasa_token, directory)
+        fetch_apod(nasa_token, directory)
     print('Done!')
 
 if __name__ == '__main__':
