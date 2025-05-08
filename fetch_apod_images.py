@@ -16,13 +16,7 @@ def create_parser():
  
     return parser
 
-def fetch_apod(nasa_token, directory, date=None):
-    url = 'https://api.nasa.gov/planetary/apod'
-    payload = {
-        'start_date': date,
-        'api_key': nasa_token,
-    }
-    photos_data = get_response(url, payload)
+def fetch_apod(directory, photos_data):
     if isinstance(photos_data, list):
         for data in photos_data:
             if "image" in data["media_type"]:
@@ -47,10 +41,16 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
+    date = None
     if namespace.date:
-        fetch_apod(nasa_token, directory, namespace.date)
-    else:
-        fetch_apod(nasa_token, directory)
+       date = namespace.date
+    url = 'https://api.nasa.gov/planetary/apod'
+    payload = {
+        'start_date': date,
+        'api_key': nasa_token,
+    }
+    photos_data = get_response(url, payload)
+    fetch_apod(directory, photos_data)
     print('Done!')
 
 if __name__ == '__main__':
