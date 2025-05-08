@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from functions import download_photo
+from functions import download_photo, get_response
 from pathlib import Path
 
 
@@ -19,15 +19,12 @@ def create_parser():
     return parser
 
 def fetch_epic_photo(nasa_token, directory):
-    url_epic = 'EPIC/api/natural/'
+    url_epic = f'{URL}EPIC/api/natural/'
     payload = {
         'images': '',
         'api_key': nasa_token,
     }
-
-    response = requests.get(f'{URL}{url_epic}', params=payload)
-    response.raise_for_status()
-    data_photos = response.json()
+    data_photos = get_response(url_epic,payload)
     for photo_num, data_photo in enumerate(data_photos):
         date = datetime.strptime(data_photo['date'], '%Y-%m-%d %H:%M:%S')
         date_photo = date.strftime('%Y/%m/%d')
@@ -37,7 +34,7 @@ def fetch_epic_photo(nasa_token, directory):
             'api_key': nasa_token,
         }
         photo_response = requests.get(photo_url, params=photo_payload)
-        response.raise_for_status()
+        photo_response.raise_for_status()
         file_name = 'epic_{}.png'.format(photo_num)
         file_path = Path(directory) / file_name
         download_photo(file_path, photo_response.url)
