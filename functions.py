@@ -22,3 +22,9 @@ def determine_file_extension(url):
     filename = urlparse(url)
     extension = splitext(filename.path)
     return extension[1]
+
+def get_response(url, payload=None):
+    response = requests.get(url, params=payload)
+    response.raise_for_status()
+    return response.json()
+     
