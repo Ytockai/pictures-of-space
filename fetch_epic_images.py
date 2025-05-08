@@ -18,13 +18,7 @@ def create_parser():
  
     return parser
 
-def fetch_epic_photo(nasa_token, directory):
-    url_epic = f'{URL}EPIC/api/natural/'
-    payload = {
-        'images': '',
-        'api_key': nasa_token,
-    }
-    data_photos = get_response(url_epic,payload)
+def fetch_epic_photo(nasa_token, directory, data_photos):
     for photo_num, data_photo in enumerate(data_photos):
         date = datetime.strptime(data_photo['date'], '%Y-%m-%d %H:%M:%S')
         date_photo = date.strftime('%Y/%m/%d')
@@ -44,7 +38,13 @@ def main():
     parser = create_parser()
     directory = parser.parse_args().path
     nasa_token = os.environ["NASA_TOKEN"]
-    fetch_epic_photo(nasa_token, directory)
+    url_epic = f'{URL}EPIC/api/natural/'
+    payload = {
+        'images': '',
+        'api_key': nasa_token,
+    }
+    data_photos = get_response(url_epic,payload)
+    fetch_epic_photo(nasa_token, directory, data_photos)
 
 if __name__ == '__main__':
     main()
