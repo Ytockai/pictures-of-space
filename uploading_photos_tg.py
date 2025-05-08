@@ -15,11 +15,11 @@ def create_parser():
  
     return parser
 
-def upload_photo(time, directory, bot, tg_chat_id):
+def upload_photos(time, directory, bot, tg_chat_id):
     while True:
-        for filesindirs in shuffle_list(directory):
+        for file in shuffle_list(directory):
             t.sleep(time)
-            send_photo(filesindirs, directory, bot, tg_chat_id)
+            send_photo(file, directory, bot, tg_chat_id)
 
 def main():
     load_dotenv()
@@ -29,7 +29,7 @@ def main():
     parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     directory = namespace.path
-    upload_photo(namespace.time, directory, bot, tg_chat_id)
+    upload_photos(namespace.time, directory, bot, tg_chat_id)
 
 if __name__ == '__main__':
     main()
